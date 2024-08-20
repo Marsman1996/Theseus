@@ -190,7 +190,6 @@
 <a href="#190" id="190">190</a>
 <a href="#191" id="191">191</a>
 <a href="#192" id="192">192</a>
-<a href="#193" id="193">193</a>
 </pre></div><pre class="rust"><code><span class="attr">#![no_std]
 </span><span class="doccomment">//! Defines traits for Files and Directories within the virtual filesystem. These files and directories mimic 
 //! that of a standard unix virtual filesystem, where directories follow a hierarchical system
@@ -216,7 +215,6 @@
 <span class="kw">use </span>alloc::sync::{Arc, Weak};
 <span class="kw">use </span>memory::MappedPages;
 <span class="kw">use </span>io::{ByteReader, ByteWriter, KnownLength};
-
 
 <span class="doccomment">/// A reference to any type that implements the [`File`] trait,
 /// which can only represent a File (not a Directory).
