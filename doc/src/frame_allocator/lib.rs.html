@@ -1386,6 +1386,10 @@
 <a href="#1386" id="1386">1386</a>
 <a href="#1387" id="1387">1387</a>
 <a href="#1388" id="1388">1388</a>
+<a href="#1389" id="1389">1389</a>
+<a href="#1390" id="1390">1390</a>
+<a href="#1391" id="1391">1391</a>
+<a href="#1392" id="1392">1392</a>
 </pre></div><pre class="rust"><code><span class="doccomment">//! Provides an allocator for physical memory frames.
 //! The minimum unit of allocation is a single frame. 
 //!
@@ -1584,6 +1588,7 @@
     <span class="kw">where </span>P: Borrow&lt;PhysicalMemoryRegion&gt;,
           R: IntoIterator&lt;Item = P&gt; + Clone,
 {
+    <span class="kw">let </span><span class="kw-2">mut </span>area = area.clone();
     <span class="comment">// This will be set to the frame that is the start of the current free region. 
     </span><span class="kw">let </span><span class="kw-2">mut </span>current_start = <span class="kw-2">*</span>area.start();
     <span class="comment">// This will be set to the frame that is the end of the current free region. 
@@ -1617,12 +1622,15 @@
                     free_list_idx,
                     reserved_physical_memory_areas.clone(),
                 );
-            }
+                area = FrameRange::new(<span class="kw-2">*</span>area.start(), current_end);
+                <span class="comment">// info!(&quot;Updating original region after exiting recursive function: {:X?}&quot;, area);
+            </span>}
         }
     }
 
     <span class="kw">let </span>new_area = FrameRange::new(current_start, current_end);
-    <span class="kw">if </span>new_area.size_in_frames() &gt; <span class="number">0 </span>{
+    <span class="comment">// info!(&quot;Adding new area: {:X?}&quot;, new_area);
+    </span><span class="kw">if </span>new_area.size_in_frames() &gt; <span class="number">0 </span>{
         free_list[<span class="kw-2">*</span>free_list_idx] = <span class="prelude-val">Some</span>(PhysicalMemoryRegion {
             typ:  MemoryRegionType::Free,
             frames: new_area,
